@@ -1,5 +1,12 @@
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import Header from "../components/Header";
+import { Anton } from "next/font/google";
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 
 
@@ -27,7 +34,7 @@ export default function Page(){
                     textAlign: 'center',
                 }}
             >
-                <Typography variant='h1' sx={{ fontSize: '4rem'}}>
+                <Typography variant='h1' sx={{ fontSize: '4rem', fontFamily: anton.style.fontFamily}}>
                     Pricing Plans
                 </Typography>
             </Box>

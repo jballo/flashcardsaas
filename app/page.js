@@ -3,6 +3,13 @@ import { Container, AppBar, Toolbar, Typography, Button, Box, Grid } from "@mui/
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import Header from "./components/Header";
 import Features from "./components/Features";
+import { Anton } from "next/font/google";
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 export default function Home() {
   const handleSubmit = async () => {
@@ -40,6 +47,7 @@ export default function Home() {
           gutterBottom
           sx={{
             fontSize: '5rem',
+            fontFamily: anton.style.fontFamily
           }}
         >
           MindSpark
@@ -54,6 +62,9 @@ export default function Home() {
           Conquer your learning with new AI Flashcards
         </Typography>
 
+        <Box
+          mt={6}
+        >
           <Box
             mt={5} 
             sx={{ display: 'flex', justifyContent: 'center'}}
@@ -69,12 +80,13 @@ export default function Home() {
               Enjoy the ability to effortlessly generate flashcards and get started on your learning journey, customize difficulty levels, and track your progress!
             </Typography>
           </Box>
-        <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
-          Get Started
-        </Button>
-        <Button variant="outlined" color="primary" sx={{mt: 2}}>
-          Learn More
-        </Button>
+          <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
+            Get Started
+          </Button>
+          <Button variant="outlined" color="primary" sx={{mt: 2}}>
+            Learn More
+          </Button>
+        </Box>
       </Box>
       <Features />
 

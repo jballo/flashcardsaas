@@ -1,5 +1,12 @@
 import { AppBar, Button, Toolbar, Typography, Box } from '@mui/material';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { Anton } from "next/font/google";
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 
 export default function Header() {
@@ -22,7 +29,13 @@ export default function Header() {
                 }}
             >
                 <Box>
-                    <Typography variant="h6" style={{flexGrow: 1}}>
+                    <Typography 
+                        variant="h5" 
+                        style={{flexGrow: 1}} 
+                        sx={{fontFamily: anton.style.fontFamily,
+                            letterSpacing: 1,
+                        }}
+                    >
                         MindSpark
                     </Typography>
                 </Box>
