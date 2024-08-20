@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Container, AppBar, Toolbar, Typography, Button, Box, Grid } from "@mui/material";
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
+import Header from "./components/Header";
 
 export default function Home() {
   const handleSubmit = async () => {
@@ -21,21 +22,9 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{flexGrow: 1}}>
-            Flashcard SaaS
-          </Typography>
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-up">Sign Up</Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
+    <Box
+    >
+      <Header />
       <Box sx={{textAlign: 'center', my: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
           Welcome to Flashcard SaaS
@@ -137,6 +126,6 @@ export default function Home() {
         </Grid>
       </Box>
 
-    </Container>
+    </Box>
   );
 }
