@@ -16,8 +16,13 @@ import {
   CardContent,
   Grid
 } from '@mui/material'
+import { db } from '@/firebase'
+import { doc, collection, getDoc, writeBatch } from 'firebase/firestore'
+
+import { useUser } from '@clerk/clerk-react'
 
 export default function Generate() {
+  const { isLoaded, isSignedIn, user } = useUser();
   const [text, setText] = useState('')
   const [flashcards, setFlashcards] = useState([])
   const [setName, setSetName] = useState('')
