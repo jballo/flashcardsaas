@@ -23,15 +23,52 @@ export default function Home() {
 
   return (
     <Box
+      width="100vw"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center'
+      }}
     >
       <Header />
-      <Box sx={{textAlign: 'center', my: 4}}>
-        <Typography variant="h2" component="h1" gutterBottom>
-          Welcome to Flashcard SaaS
+      <Box>
+        <Typography 
+          variant="h1" 
+          gutterBottom
+          mt={5}
+          sx={{
+            fontSize: '5rem',
+          }}
+        >
+          MindSpark
         </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
-          The easiest way to create flashcards from your text.
+        <Typography 
+          variant="h2" 
+          gutterBottom
+          sx={{
+            fontSize: '3.5rem',
+          }}
+        >
+          Conquer your learning with new AI Flashcards
         </Typography>
+
+          <Box
+            mt={5} 
+            sx={{ display: 'flex', justifyContent: 'center'}}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontSize: '1.5rem',
+                // textAlign: 'center',
+                maxWidth: '60%'
+              }}
+            >
+              Enjoy the ability to effortlessly generate flashcards and get started on your learning journey, customize difficulty levels, and track your progress!
+            </Typography>
+          </Box>
         <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
           Get Started
         </Button>
@@ -41,49 +78,6 @@ export default function Home() {
       </Box>
       <Box sx={{my: 6, textAlign: 'center'}}>
         <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid><Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{my: 6, textAlign: 'center'}}>
-        <Typography variant="h4" component="h2" gutterBottom>Pricing</Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Box
