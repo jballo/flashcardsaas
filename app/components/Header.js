@@ -23,7 +23,7 @@ export default function Header() {
             >
                 <Box>
                     <Typography variant="h6" style={{flexGrow: 1}}>
-                        Flashcard SaaS
+                        MindSpark
                     </Typography>
                 </Box>
                 <Box>
