@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from '@mui/material';
 export default function Features() {
 
     return (
-        <Box sx={{my: 6, textAlign: 'center'}}>
+        <Box sx={{my: 6, textAlign: 'center', width: '85%'}}>
             <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
             <Grid container spacing={4}>
             <Grid item xs={12} md={4}>

@@ -34,11 +34,10 @@ export default function Home() {
       }}
     >
       <Header />
-      <Box>
+      <Box my={5}>
         <Typography 
           variant="h1" 
           gutterBottom
-          mt={5}
           sx={{
             fontSize: '5rem',
           }}
