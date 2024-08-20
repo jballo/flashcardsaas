@@ -1,6 +1,15 @@
 import Image from "next/image";
 import { Container, AppBar, Toolbar, Typography, Button, Box, Grid } from "@mui/material";
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
+import Header from "./components/Header";
+import Features from "./components/Features";
+import { Anton } from "next/font/google";
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 export default function Home() {
   const handleSubmit = async () => {
@@ -21,122 +30,66 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" style={{flexGrow: 1}}>
-            Flashcard SaaS
-          </Typography>
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">Login</Button>
-            <Button color="inherit" href="/sign-up">Sign Up</Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
-      <Box sx={{textAlign: 'center', my: 4}}>
-        <Typography variant="h2" component="h1" gutterBottom>
-          Welcome to Flashcard SaaS
+    <Box
+      width="100vw"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center'
+      }}
+    >
+      <Header />
+      <Box my={5}>
+        <Typography 
+          variant="h1" 
+          gutterBottom
+          sx={{
+            fontSize: '5rem',
+            fontFamily: anton.style.fontFamily
+          }}
+        >
+          MindSpark
         </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
-          The easiest way to create flashcards from your text.
+        <Typography 
+          variant="h2" 
+          gutterBottom
+          sx={{
+            fontSize: '3.5rem',
+          }}
+        >
+          Conquer your learning with new AI Flashcards
         </Typography>
-        <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
-          Get Started
-        </Button>
-        <Button variant="outlined" color="primary" sx={{mt: 2}}>
-          Learn More
-        </Button>
-      </Box>
-      <Box sx={{my: 6, textAlign: 'center'}}>
-        <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid><Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{my: 6, textAlign: 'center'}}>
-        <Typography variant="h4" component="h2" gutterBottom>Pricing</Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid><Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2 
-              }}
-            >
-              <Typography variant="h6">Easy Text Input</Typography>
-              <Typography>{' '}AI Generation</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
 
-    </Container>
+        <Box
+          mt={6}
+        >
+          <Box
+            mt={5} 
+            sx={{ display: 'flex', justifyContent: 'center'}}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontSize: '1.5rem',
+                // textAlign: 'center',
+                maxWidth: '60%'
+              }}
+            >
+              Enjoy the ability to effortlessly generate flashcards and get started on your learning journey, customize difficulty levels, and track your progress!
+            </Typography>
+          </Box>
+          <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
+            Get Started
+          </Button>
+          <Button variant="outlined" color="primary" sx={{mt: 2}}>
+            Learn More
+          </Button>
+        </Box>
+      </Box>
+      <Features />
+
+    </Box>
   );
 }
