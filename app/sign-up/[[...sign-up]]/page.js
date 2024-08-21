@@ -43,7 +43,7 @@ export default function SignUpPage() {
                     </Button>
                 </Box>
                 <Box>
-                    <Button color='inherit' href="/sign-in">Login</Button>
+                    <Button color='inherit' href="/sign-in">Sign In</Button>
                 </Box>
             </Toolbar>
         </AppBar>
@@ -54,7 +54,14 @@ export default function SignUpPage() {
             alignItems="center"
             sx={{textAlign: 'center', my: 4}}
             >
-            <Typography variant="h4" component="h1" gutterBottom marginBottom={5}>
+            <Typography 
+                variant="h1" 
+                gutterBottom
+                sx={{
+                    fontSize: '5rem',
+                    fontFamily: anton.style.fontFamily
+                }}
+            >
                 Sign Up
             </Typography>
             <SignUp />

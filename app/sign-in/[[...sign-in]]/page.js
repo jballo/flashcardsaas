@@ -54,7 +54,14 @@ export default function SignInPage() {
             alignItems="center"
             sx={{textAlign: 'center', my: 4}}
             >
-            <Typography variant="h4" component="h1" gutterBottom marginBottom={5}>
+            <Typography 
+                variant="h1" 
+                gutterBottom
+                sx={{
+                    fontSize: '5rem',
+                    fontFamily: anton.style.fontFamily
+                }}
+            >
                 Sign In
             </Typography>
             <SignIn />

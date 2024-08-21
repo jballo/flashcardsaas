@@ -29,18 +29,19 @@ export default function Header() {
                 }}
             >
                 <Box>
-                    <Typography 
-                        variant="h5" 
-                        style={{flexGrow: 1}} 
-                        sx={{fontFamily: anton.style.fontFamily,
-                            letterSpacing: 1,
-                        }}
-                    >
-                        MindSpark
-                    </Typography>
+                    <Button color="inherit" href="/" sx={{textTransform: 'none'}}>
+                        <Typography 
+                            variant="h5" 
+                            style={{flexGrow: 1}} 
+                            sx={{fontFamily: anton.style.fontFamily,
+                                letterSpacing: 1,
+                            }}
+                        >
+                            MindSpark
+                        </Typography>
+                    </Button>
                 </Box>
                 <Box>
-                    <Button color='inherit' href="/">Home</Button>
                     <Button color="inherit" href="/pricing">Pricing</Button>
                     <Button color='inherit' href="/contact">Contact</Button>
                     <SignedOut>
