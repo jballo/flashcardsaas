@@ -1,5 +1,4 @@
 import Header from "../components/Header";
-import CustomCard from "./card";
 import { Anton } from "next/font/google";
 import React from 'react';
 import { Box, Button, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
@@ -95,49 +94,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-
-
-// export default function ContactPage() {
-//     return (
-//         <Box
-//             width="100vw"
-//             sx={{
-//                 display: 'flex',
-//                 flexDirection: 'column',
-//                 alignItems: 'center',
-//                 justifyContent: 'center',
-//                 textAlign: 'center'
-//             }}
-//         >
-//             <Header />
-//             <Box my={5}>
-//                 <Typography 
-//                     variant="h1" 
-//                     gutterBottom
-//                     sx={{
-//                         fontSize: '5rem',
-//                         fontFamily: anton.style.fontFamily
-//                     }}
-//                 >
-//                     Meet The Team
-//                 </Typography>
-//             </Box>
-//             <Box sx={{
-//                 display: 'flex',
-//                 flexDirection: 'column',
-//                 alignItems: 'center',
-//                 justifyContent: 'center',
-//                 textAlign: 'center'
-//             }}>
-//                 <Stack direction={"row"} spacing={10}>
-//                     <CustomCard 
-//                         imageUrl={'https://www.lifewire.com/thmb/lWlCQDkZkvbWxKhkJZ6yjOJ_J4k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ScreenShot2020-04-20at10.03.23AM-d55387c4422940be9a4f353182bd778c.jpg'}
-//                         name={"Jonathan Ballona Sanchez"}
-//                     />
-//                     <CustomCard />
-//                     <CustomCard />
-//                 </Stack>
-//             </Box>
-//         </Box>
-//     )
-// }
