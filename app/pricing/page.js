@@ -134,10 +134,10 @@ export default function PricingPage() {
                             key={idx}
                             sx={{
                                 display: 'flex',
-                                alignItems: 'center',
                                 mb: 2,
                                 color: feature.available ? 'text.primary' : 'error.main',
                             }}
+                            align='left'
                             >
                             {feature.available ? (
                                 <CheckCircleIcon sx={{ mr: 1 }} />

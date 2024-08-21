@@ -15,21 +15,21 @@ const teamMembers = [
     title: 'Full Stack Developer',
     description: 'Graduate of UC Merced',
     website: 'https://www.google.com',
-    imgUrl: "../../src/assets/leaf.jpeg",
+    imgUrl: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg",
   },
   {
     name: 'Karla Zamora',
     title: 'AI/ML and Backend Developer',
     description: 'University of Texas, Rio Grande Valley',
     website: 'https://www.google.com',
-    imgUrl: '/team2.jpg',
+    imgUrl: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg',
   },
   {
     name: 'Pranav Palle',
     title: 'Designer and Frontend Developer',
     description: 'University of Maryland, College Park',
     website: 'https://pranavpalle.netlify.app',
-    imgUrl: '/team3.jpg',
+    imgUrl: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg',
   },
 ];
 
@@ -63,9 +63,9 @@ const ContactPage = () => {
                         <Card sx={{ boxShadow: 3 }}>
                             <CardMedia
                                 component="img"
-                                style={{height: 0, paddingTop: '56.25%'}}
-                                image={member.imgUrl}
                                 alt={member.name}
+                                image={member.imgUrl} 
+                                sx={{ borderRadius: '4px 4px 0 0' }}
                             />
                             <CardContent>
                                 <Typography variant="h5">{member.name}</Typography>
