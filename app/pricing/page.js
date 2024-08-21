@@ -1,3 +1,4 @@
+'use client'
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { Anton } from "next/font/google";
@@ -11,6 +12,31 @@ const anton = Anton({
 
 
 export default function Page(){
+
+    const handleSubmit = async () => {
+        const checkoutSession = await fetch('/api/checkout_session', {
+          method: 'POST',
+          headers: {
+            origin: 'http://localhost:3000',
+          },
+        });
+    
+        const checkoutSessionJson = await checkoutSession.json();
+    
+        if (checkoutSession.statusCode == 500) {
+          console.error(checkoutSession.message);
+          return;
+        }
+    
+        const stripe = await getStripe();
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: checkoutSessionJson.id,
+        });
+    
+        if (error) {
+          console.warn(error.message);
+        }
+      }
 
     return(
         <Box
@@ -330,6 +356,7 @@ export default function Page(){
                                     variant="contained" 
                                     fullWidth size="small" 
                                     sx={{backgroundColor: 'white'}}
+                                    onClick={handleSubmit}
                                 >
                                     <Typography variant="body1p" color='black'>Get Started</Typography>
                                 </Button>

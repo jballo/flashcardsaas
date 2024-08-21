@@ -83,7 +83,7 @@ export default function Home() {
           <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
             Get Started
           </Button>
-          <Button variant="outlined" color="primary" sx={{mt: 2}}>
+          <Button variant="outlined" color="primary" sx={{mt: 2}} href='/pricing'>
             Learn More
           </Button>
         </Box>
