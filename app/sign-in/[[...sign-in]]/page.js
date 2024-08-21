@@ -1,9 +1,7 @@
 import React from 'react'
 import { Box, Typography, AppBar, Toolbar, Button } from '@mui/material'
 import { SignIn } from '@clerk/nextjs'
-import Link from 'next/link'
 import { Anton } from "next/font/google";
-import Header from "../../components/Header";
 
 const anton = Anton({
     weight: '400',
@@ -64,9 +62,7 @@ export default function SignInPage() {
             >
                 Sign In
             </Typography>
-
             <SignIn />
-
         </Box>
     </Box>
   )
