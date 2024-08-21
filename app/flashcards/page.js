@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
+import { Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
 
 
 export default function Flashcards() {
@@ -43,6 +43,8 @@ export default function Flashcards() {
 
   return (
     <Container maxWidth='100vw'>
+      <Button href="/">Home</Button>
+      <Button href="/generate">New Set</Button>
       <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcards.map((flashcard, index) => (
           <Grid item xs={12} md={4} key={index}>
