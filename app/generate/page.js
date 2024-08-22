@@ -227,7 +227,7 @@ export default function Generate() {
                 margin='dense'
                 label='Collection Name'
                 type='text'
-                fullWidth
+                p={3}
                 value={name}
                 onChange={((e) => setName(e.target.value))}
                 variant='outlined'

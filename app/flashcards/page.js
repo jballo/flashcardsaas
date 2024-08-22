@@ -8,7 +8,15 @@ import { useEffect, useState } from "react";
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, Toolbar, Typography } from "@mui/material";
+import { Anton } from "next/font/google";
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 
 export default function Flashcards() {
@@ -42,23 +50,58 @@ export default function Flashcards() {
   };
 
   return (
-    <Container maxWidth='100vw'>
-      <Button href="/">Home</Button>
-      <Button href="/generate">New Set</Button>
-      <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcards.map((flashcard, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Card>
-              <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
-                <CardContent>
-                  <Typography variant='h6'>{flashcard.name}</Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <>
+      <AppBar
+        position="static"
+        left={0}
+        top={0}
+        sx={{
+          width: '100vw',
+          backgroundColor: '#62C4E1',
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <a href="/" style={{ textDecoration: "none", color: "white" }}>
+              <Typography
+                variant="h5"
+                style={{ flexGrow: 1 }}
+                sx={{
+                  fontFamily: anton.style.fontFamily,
+                  letterSpacing: 1,
+                }}
+              >
+                MindSpark
+              </Typography>
+            </a>
+          </Box>
+          <Box>
+            <Button variant="contained" sx={{ color: "white" }} startIcon={<LibraryAddIcon />} href="/generate">New Set</Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth='100vw'>
+
+        <Grid container spacing={3} sx={{ mt: 4 }}>
+          {flashcards.map((flashcard, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Card>
+                <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
+                  <CardContent>
+                    <Typography variant='h6'>{flashcard.name}</Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </>
   );
 
 }
