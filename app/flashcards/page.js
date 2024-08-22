@@ -2,7 +2,7 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, CollectionReference, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, DialogContent, Dialog, DialogActions, DialogContentText, DialogTitle, Grid, IconButton, Stack, TextField, Toolbar, Typography } from "@mui/material";
@@ -22,6 +22,9 @@ export default function Flashcards() {
   const [filter, setFilter] = useState("");
   const [modal, setModal] = useState(false);
   const [cardName, setCardName] = useState("");
+  // index to be deleted
+  const [delIndex, setDelIndex] = useState('')
+  const [deleteOp, setdeleteOp] = useState('')
   const router = useRouter();
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function Flashcards() {
       }
     }
     getFlashCards();
-  }, [user, filter]);
+  }, [user, filter, deleteOp]);
 
   if (!isLoaded || !isSignedIn) {
     return <></>;
@@ -50,13 +53,31 @@ export default function Flashcards() {
     router.push(`/flashcard?id=${id}`);
   };
 
-  const handleDeletion = () => {
-    // add deletion code
+  // Delete flashcard set
+  const handleDelete = async () => {
+    // Get set reference in db
+    console.log(delIndex)
+    const docRef = doc(collection(db, 'users'), user.id);
+    const docSnap = await getDoc(docRef);
+    const allCollections = docSnap.data().flashcards
+    const collectionToDelete = allCollections[delIndex].name
+    // Delete from flashcards array in users.flashcards
+    allCollections.splice(delIndex, 1)
+    await updateDoc(docRef, { flashcards: allCollections })
+    // Delete collection in users (del all documents/flshcards)
+    const flashcardsCollectionRef = collection(db, 'users', user.id, collectionToDelete);
+    const flashcardsSnapshot = await getDocs(flashcardsCollectionRef);
+    const deletePromises = flashcardsSnapshot.docs.map((doc) => deleteDoc(doc.ref));
+    await Promise.all(deletePromises);
+    // Trigger retrieval of flashcards and close modal
+    setdeleteOp(collectionToDelete)
+    setModal(false)
   }
 
-  const handleOpen = (setname) => {
+  const handleOpen = (setname, index) => {
     setModal(true);
     setCardName(setname);
+    setDelIndex(index)
   };
 
   const handleClose = () => {
@@ -105,21 +126,21 @@ export default function Flashcards() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        sx={{textAlign: 'center', my: 4}}
+        sx={{ textAlign: 'center', my: 4 }}
+      >
+        <Typography
+          variant="h1"
+          gutterBottom
+          sx={{
+            fontSize: '5rem',
+            fontFamily: anton.style.fontFamily
+          }}
         >
-        <Typography 
-            variant="h1" 
-            gutterBottom
-            sx={{
-                fontSize: '5rem',
-                fontFamily: anton.style.fontFamily
-            }}
-        >
-            Flashcard Sets
+          Flashcard Sets
         </Typography>
       </Box>
       <Container maxWidth='100vw'>
-      <TextField id="outlined-basic" label="Search Sets" variant="outlined" fullWidth onChange={((e) => setFilter(e.target.value))}/>      
+        <TextField id="outlined-basic" label="Search Sets" variant="outlined" fullWidth onChange={((e) => setFilter(e.target.value))} />
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {flashcards.map((flashcard, index) => (
             <Grid item xs={12} md={4} key={index}>
@@ -128,14 +149,14 @@ export default function Flashcards() {
                   <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
                     <CardContent>
                       <Stack direction={'row'} gap={3}>
-                          <Typography variant='h6' textAlign={'right'}>{"→"}</Typography>
-                          <Typography variant='h6'>{flashcard.name}</Typography>          
+                        <Typography variant='h6' textAlign={'right'}>{"→"}</Typography>
+                        <Typography variant='h6'>{flashcard.name}</Typography>
                       </Stack>
                     </CardContent>
                   </CardActionArea>
-                  <Box sx={{alignContent: "center", justifyItems: "center", paddingLeft: 2, paddingRight: 2}}>
-                    <IconButton aria-label="delete" onClick={() => handleOpen(flashcard.name)} sx={{background:'white', "&:hover": {bgcolor: "red"}}}>
-                      <DeleteIcon sx={{ color: 'black', "&:hover": {color: "white"} }}/>
+                  <Box sx={{ alignContent: "center", justifyItems: "center", paddingLeft: 2, paddingRight: 2 }}>
+                    <IconButton aria-label="delete" onClick={() => handleOpen(flashcard.name, index)} sx={{ background: 'white', "&:hover": { bgcolor: "red" } }}>
+                      <DeleteIcon sx={{ color: 'black', "&:hover": { color: "white" } }} />
                     </IconButton>
                   </Box>
                 </Stack>
@@ -158,10 +179,10 @@ export default function Flashcards() {
             Are you sure you want to delete this set?
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{alignItems: 'center', justifyContent: 'center'}}>
-          <Button onClick={handleClose}>No - Cancel</Button>
-          <Button onClick={handleDeletion} autoFocus>
-            Yes - Delete
+        <DialogActions sx={{ alignItems: 'center', justifyContent: 'center' }}>
+          <Button onClick={handleClose}><Typography>No - Cancel</Typography></Button>
+          <Button onClick={handleDelete} autoFocus>
+            <Typography>Yes - Delete</Typography>
           </Button>
         </DialogActions>
       </Dialog>
