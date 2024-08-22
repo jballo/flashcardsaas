@@ -1,6 +1,9 @@
 import { AppBar, Button, Toolbar, Typography, Box, Stack } from '@mui/material';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Anton } from "next/font/google";
+import { useUser } from '@clerk/nextjs';
+import { collection, query, getDocs, where } from 'firebase/firestore';
+import { db } from '@/firebase';
 
 const anton = Anton({
   weight: '400',
@@ -10,6 +13,36 @@ const anton = Anton({
 
 
 export default function Header() {
+    const { user, isLoaded, isSignedIn } = useUser();
+
+    const checkPlan = async (link) => {
+        if(isSignedIn && isLoaded && user){
+            console.log("User is signed in and loaded");
+
+            const usersRef = collection(db, 'users');
+            const userQuery = query(usersRef, where('email', '==',  user.primaryEmailAddress.emailAddress));
+            const userSnapshot = await getDocs(userQuery);
+
+            if(userSnapshot.empty){
+                console.error(`User with email ${user.primaryEmailAddress.emailAddress} not found`);
+            }
+
+            let userData = userSnapshot.docs[0].data();
+
+            if(userData.isActive === false){
+                alert("You need to have a subscription to access this feature. Please sign up for a subscription.");
+                return;
+            }
+            
+            console.log("User has a subscription");
+            window.location.href = link;
+
+        } else {
+            console.log("User is not signed in or loaded");
+        }
+
+    }
+
     return (
         <AppBar 
             position="static"
@@ -42,8 +75,18 @@ export default function Header() {
                 <Stack direction="row">
                     <Box>
                         <SignedIn>
-                            <Button color="inherit" href="/generate">Generate</Button>
-                            <Button color="inherit" href="/flashcards">Flashcards</Button>
+                            <Button 
+                                color="inherit"
+                                onClick={() => checkPlan('/generate')}
+                            >
+                                Generate
+                            </Button>
+                            <Button 
+                                color="inherit" 
+                                onClick={() => checkPlan("/flashcards")}
+                            >
+                                Flashcards
+                            </Button>
                         </SignedIn>
                         <Button color="inherit" href="/pricing">Pricing</Button>
                         <Button color='inherit' href="/contact">Contact</Button>

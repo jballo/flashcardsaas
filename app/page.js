@@ -7,7 +7,7 @@ import Features from "./components/Features";
 import { Anton } from "next/font/google";
 import { useUser } from '@clerk/nextjs'; 
 import { useEffect } from "react";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc, query, where } from "firebase/firestore";
 import { db } from "@/firebase";
 
 
@@ -19,6 +19,34 @@ const anton = Anton({
 
 export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
+
+  const checkPlan = async (link) => {
+    if(isSignedIn && isLoaded && user){
+        console.log("User is signed in and loaded");
+
+        const usersRef = collection(db, 'users');
+        const userQuery = query(usersRef, where('email', '==',user.primaryEmailAddress.emailAddress));
+        const userSnapshot = await getDocs(userQuery);
+
+        if(userSnapshot.empty){
+            console.error(`User with email ${useprimaryEmailAddress.emailAddress} not found`);
+        }
+
+        let userData = userSnapshot.docs[0].data();
+
+        if(userData.isActive === false){
+            alert("You need to have a subscription to access this feature. Please sign up for a subscription.");
+            return;
+        }
+            
+        console.log("User has a subscription");
+        window.location.href = link;
+
+    } else {
+        console.log("User is not signed in or loaded");
+    }
+
+  }
 
   const createUser = async () => {
     try{
@@ -140,7 +168,12 @@ export default function Home() {
             </Button>
           </SignedOut>
           <SignedIn>
-            <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
+            <Button 
+              variant="contained" 
+              color="primary" 
+              sx={{mt: 2, mr: 2}} 
+              onClick={() => checkPlan("/generate")}
+            >
               Get Started
             </Button>
           </SignedIn>
