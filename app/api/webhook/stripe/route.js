@@ -6,6 +6,16 @@ import { setDoc, collection, getDoc, getDocs, query, where } from "firebase/fire
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
+const plans = [
+    {
+        priceId: 'price_1PqdFpKrKjT7Qm7LmOez9rzY',
+        name: 'Pro',
+    },
+    {
+        priceId: 'price_1PqcV0KrKjT7Qm7LCrPfr4ba',
+        name: 'Ultimate',
+    }
+];
 
 export async function POST(req) {
 
@@ -42,10 +52,10 @@ export async function POST(req) {
                 const customer = await stripe.customers.retrieve(customerId);
 
                 const priceId = session?.line_items.data[0]?.price.id;
-                // const plan = plans.find((p) => p.priceId === priceId);
+                const plan = plans.find((p) => p.priceId === priceId);
 
-                // if (!plan) break;
-                if (priceId !== 'price_1Pq9iFKrKjT7Qm7LXNtEBHUl') break;
+                // if price id matches either price id's, break
+                if (!plan) break;
 
                 console.log('session.payment_status: ', session.payment_status);
                 if (session.payment_status !== 'paid') {

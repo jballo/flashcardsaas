@@ -32,7 +32,7 @@ const pricingPlans = [
       { feature: 'Limited customization', available: true },
       { feature: 'Difficulty customization', available: false },
     ],
-    paymentBaseUrl: '',
+    paymentBaseUrl: 'free',
     description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
     icon: <PersonIcon style={{ fontSize: 40 }} />,
   },
@@ -45,7 +45,7 @@ const pricingPlans = [
       { feature: 'Access to various customizations', available: true },
       { feature: 'Difficulty levels', available: true },
     ],
-    paymentBaseUrl: 'https://buy.stripe.com/test_aEU8yZ3Qw1u34bC144',
+    paymentBaseUrl: 'https://buy.stripe.com/test_eVadTjeva8Wv5fG9AC',
     description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
     icon: <PeopleIcon style={{ fontSize: 40}} />,
   },
@@ -58,7 +58,7 @@ const pricingPlans = [
       { feature: 'Full customization', available: true },
       { feature: 'Difficulty levels', available: true },
     ],
-    paymentBaseUrl: '',
+    paymentBaseUrl: 'https://buy.stripe.com/test_fZe16xbiY5KjgYo7st',
     description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
     icon: <GroupsIcon style={{ fontSize: 40 }} />,
   },
@@ -73,6 +73,11 @@ export default function PricingPage() {
             alert('Please sign in to subscribe');
             return;
         };
+        if(paymentBaseUrl === 'free'){
+            alert('Free plan not available, yet. Please select a different plan.');
+            return;
+        }
+
         // function that opens a link to the stripe checkout page
         const paymentlink = paymentBaseUrl + '?prefilled_email=' + user?.primaryEmailAddress;
         window.open(paymentlink, '_blank');
