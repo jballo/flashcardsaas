@@ -1,3 +1,4 @@
+'use client';
 import { AppBar, Button, Toolbar, Typography, Box, Stack } from '@mui/material';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Anton } from "next/font/google";
