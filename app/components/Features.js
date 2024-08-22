@@ -9,17 +9,17 @@ const anton = Anton({
 
 const featuresList = [
     {
-      imgUrl: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg",
+      imgUrl: "/easyInput.png",
       title: "Easy Text Input",
       description: "Input your text and let our AI do the rest"
     },
     {
-      imgUrl: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg",
+      imgUrl: "/customize.png",
       title: "Customizable Flashcards",
       description: "Customize your flashcards to your liking"
     },
     {
-      imgUrl: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg",
+      imgUrl: "/progress.png",
       title: "Track Progress",
       description: "Track your progress and see how you improve"
     }
