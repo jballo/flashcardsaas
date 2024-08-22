@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, Stack, Toolbar, Typography } from "@mui/material";
 import { Anton } from "next/font/google";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
@@ -81,6 +81,24 @@ export default function Flashcards() {
           </Box>
         </Toolbar>
       </AppBar>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{textAlign: 'center', my: 4}}
+        >
+        <Typography 
+            variant="h1" 
+            gutterBottom
+            sx={{
+                fontSize: '5rem',
+                fontFamily: anton.style.fontFamily
+            }}
+        >
+            Flashcard Sets
+        </Typography>
+      </Box>
       <Container maxWidth='100vw'>
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {flashcards.map((flashcard, index) => (
@@ -88,7 +106,10 @@ export default function Flashcards() {
               <Card>
                 <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
                   <CardContent>
+                    <Stack direction={'row'} justifyContent={"space-between"}>
                     <Typography variant='h6'>{flashcard.name}</Typography>
+                    <Typography variant='h6' textAlign={'right'}>{"→"}</Typography>
+                    </Stack>
                   </CardContent>
                 </CardActionArea>
               </Card>

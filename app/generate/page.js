@@ -143,7 +143,16 @@ export default function Generate() {
             alignItems: 'center',
           }}
         >
-          <Typography variant='h4'>Generate Flashcards</Typography>
+          <Typography 
+            variant="h1" 
+            gutterBottom
+            sx={{
+                fontSize: '5rem',
+                fontFamily: anton.style.fontFamily
+            }}
+          >
+              Generate Flashcards
+          </Typography>
           <Paper sx={{ p: 4, width: '100%' }}>
             <TextField
               value={text}
@@ -183,7 +192,7 @@ export default function Generate() {
                                 transformStyle: 'preserve-3d',
                                 position: 'relative',
                                 width: '100%',
-                                height: '200px',
+                                height: '300px',
                                 boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.2)',
                                 transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
                               },
@@ -210,7 +219,7 @@ export default function Generate() {
                                 </Typography>
                               </div>
                               <div>
-                                <Typography variant='h5' component='div'>
+                                <Typography variant='h6' component='div'>
                                   {flashcard.back}
                                 </Typography>
                               </div>
