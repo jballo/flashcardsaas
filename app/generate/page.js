@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from "@clerk/nextjs";
-import { Box, DialogContent, Paper, TextField, Typography, Button, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogActions, DialogContentText, Drawer, Accordion, AccordionSummary, AccordionDetails, AppBar, Toolbar } from "@mui/material";
+import { Box, DialogContent, Paper, TextField, Typography, Button, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogActions, DialogContentText, AppBar, Toolbar, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,20 +19,18 @@ export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState([]);
-  const [text, setText] = useState('');
   const [name, setName] = useState('');
   const [modal, setModal] = useState(false);
   const router = useRouter();
-  const [openDrawer, setOpenDrawer] = useState(false);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpenDrawer(newOpen);
-  };
+  // Prompt data
+  const [text, setText] = useState('');
+  const [difficulty, setDifficulty] = useState("normal")
+  const [amount, setAmount] = useState('10')
 
   const handleSubmit = async () => {
     fetch('api/generate', {
       method: 'POST',
-      body: text,
+      body: "Topic: " + text + ", Difficulty: " + difficulty + ", Amount: " + amount,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -127,12 +125,10 @@ export default function Generate() {
             </a>
           </Box>
           <Box>
-            <Button variant="contained" sx={{color:"white"}} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
-
+            <Button variant="contained" sx={{ color: "white" }} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
           </Box>
         </Toolbar>
       </AppBar>
-      
         <Box 
           width='75vw'
           sx={{
@@ -157,7 +153,7 @@ export default function Generate() {
             <TextField
               value={text}
               onChange={((e) => setText(e.target.value))}
-              label='Enter text'
+              label='Enter Topic'
               fullWidth
               multiline
               rows={4}
@@ -166,112 +162,147 @@ export default function Generate() {
                 mb: 2,
               }}
             />
-            <Button variant='contained' color='primary' onClick={handleSubmit} fullWidth>
-              {' '}
-              Submit
-            </Button>
+            <Box sx={{ display:'flex', justifyContent: 'space-evenly'}} gap={2}>
+              <FormControl sx={{ flex: 1 }}>
+                <InputLabel id="difficulty-label"> <Typography>Difficulty</Typography> </InputLabel>
+                <Select
+                  labelId="diff-select-label"
+                  displayEmpty
+                  value={difficulty}
+                  label="Difficulty"
+                  onChange={((e) => setDifficulty(e.target.value))}
+                >
+                  <MenuItem value={"Easy"}>Easy</MenuItem>
+                  <MenuItem value={"Normal"}>Normal</MenuItem>
+                  <MenuItem value={"Hard"}>Hard</MenuItem>
+                  <MenuItem value={"Master"}>Master</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ flex: 1 }}>
+                <InputLabel id="difficulty-label"> <Typography>Amount</Typography> </InputLabel>
+                <Select
+                  labelId="amnt-select-label"
+                  displayEmpty
+                  value={amount}
+                  label="Amount"
+                  onChange={((e) => setAmount(e.target.value))}
+                >
+                  <MenuItem value={"5"}>5</MenuItem>
+                  <MenuItem value={"10"}>10</MenuItem>
+                  <MenuItem value={"15"}>15</MenuItem>
+                  <MenuItem value={"20"}>20</MenuItem>
+                  <MenuItem value={"25"}>25</MenuItem>
+                  <MenuItem value={"30"}>30</MenuItem>
+                </Select>
+              </FormControl>
+              <Button sx={{ flex: 1 }} variant='contained' color='primary' onClick={handleSubmit} >
+                {' '}
+                Submit
+              </Button>
+            </Box>
           </Paper>
         </Box>
 
         {flashcards.length > 0 && (
           <>
-          <Box sx={{ mt: 4 }} width='75vw'>
-            <Typography variant='h5'>Flashcards Preview</Typography>
-            <Grid container spacing={3}>
-              {
-                flashcards.map((flashcard, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Card>
-                      <CardActionArea onClick={() => handleCardClick(index)}>
-                        <CardContent>
-                          <Box
-                            sx={{
-                              perspective: '1000px',
-                              '& > div': {
-                                transition: 'transform 0.6s',
-                                transformStyle: 'preserve-3d',
-                                position: 'relative',
-                                width: '100%',
-                                height: '300px',
-                                boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.2)',
-                                transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                              },
-                              '& > div > div': {
-                                position: 'absolute',
-                                width: '100%',
-                                height: '100%',
-                                backfaceVisibility: 'hidden',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: 2,
-                                boxSizing: 'border-box',
-                              },
-                              '& > div > div:nth-of-type(2)': {
-                                transform: 'rotateY(180deg)',
-                              },
-                            }}
-                          >
-                            <div>
+            <Box sx={{ mt: 4 }} width='75vw'>
+              <Typography variant='h4' sx={{mb: 4}}>Flashcards Preview</Typography>
+              <Grid container spacing={3}>
+                {
+                  flashcards.map((flashcard, index) => (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <Card>
+                        <CardActionArea onClick={() => handleCardClick(index)}>
+                          <CardContent>
+                            <Box
+                              sx={{
+                                perspective: '1000px',
+                                '& > div': {
+                                  transition: 'transform 0.6s',
+                                  transformStyle: 'preserve-3d',
+                                  position: 'relative',
+                                  width: '100%',
+                                  height: '300px',
+                                  boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.2)',
+                                  transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                                },
+                                '& > div > div': {
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backfaceVisibility: 'hidden',
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  padding: 2,
+                                  boxSizing: 'border-box',
+                                },
+                                '& > div > div:nth-of-type(2)': {
+                                  transform: 'rotateY(180deg)',
+                                },
+                              }}
+                            >
                               <div>
-                                <Typography variant='h5' component='div'>
-                                  {flashcard.front}
-                                </Typography>
+                                <div>
+                                  <Typography variant='h5' component='div'>
+                                    {flashcard.front}
+                                  </Typography>
+                                </div>
+                                <div>
+                                  <Typography variant='h6' component='div'>
+                                    {flashcard.back}
+                                  </Typography>
+                                </div>
                               </div>
-                              <div>
-                                <Typography variant='h6' component='div'>
-                                  {flashcard.back}
-                                </Typography>
-                              </div>
-                            </div>
-                          </Box>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
-                ))
-              }
-            </Grid>
-            <Box sx={{ my: 6, display: 'flex', justifyContent: 'center' }}>
-              <Button variant='contained' color='secondary' onClick={handleOpen}>
-                Save
-              </Button>
+                            </Box>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+                  ))
+                }
+              </Grid>
+              <Box sx={{ my: 6, display: 'flex', justifyContent: 'center' }}>
+                <Button variant='contained' color='secondary' onClick={handleOpen}>
+                  Save
+                </Button>
+              </Box>
             </Box>
-          </Box>
-          <Dialog
-            open={modal}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Save Flashcards"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Please enter a name for your flashcards collection
-              </DialogContentText>
-              <TextField
-                autoFocus
-                required
-                fullWidth
-                margin='dense'
-                label='Collection Name'
-                type='text'
-                value={name}
-                onChange={((e) => setName(e.target.value))}
-                variant='outlined'
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={saveFlashcards} autoFocus>
-                Save
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      )}
+            <Dialog
+              open={modal}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Save Flashcards"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Please enter a name for your flashcards collection
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  required
+                  fullWidth
+                  margin='dense'
+                  label='Collection Name'
+                  type='text'
+                  value={name}
+                  onChange={((e) => setName(e.target.value))}
+                  variant='outlined'
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={saveFlashcards} autoFocus>
+                  Save
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        )}
     </Box>
   );
+
 }

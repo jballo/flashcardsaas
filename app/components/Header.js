@@ -41,6 +41,10 @@ export default function Header() {
                 </Box>
                 <Stack direction="row">
                     <Box>
+                        <SignedIn>
+                            <Button color="inherit" href="/generate">Generate</Button>
+                            <Button color="inherit" href="/flashcards">Flashcards</Button>
+                        </SignedIn>
                         <Button color="inherit" href="/pricing">Pricing</Button>
                         <Button color='inherit' href="/contact">Contact</Button>
                         <SignedOut>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, Stack, TextField, Toolbar, Typography } from "@mui/material";
 import { Anton } from "next/font/google";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
@@ -18,6 +18,7 @@ const anton = Anton({
 export default function Flashcards() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
+  const [filter, setFilter] = useState("")
   const router = useRouter();
 
   useEffect(() => {
@@ -27,15 +28,16 @@ export default function Flashcards() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const collections = docSnap.data().flashcards || [];
-        console.log("collections: ", collections);
+        const allCollections = docSnap.data().flashcards || [];
+        const collections = allCollections.filter((list) => list.name.toLowerCase().includes(filter.toLowerCase()))
+        //console.log("collections: ", collections);
         setFlashcards(collections);
       } else {
         await setDoc(docRef, { flashcards: [] });
       }
     }
     getFlashCards();
-  }, [user]);
+  }, [user, filter]);
 
   if (!isLoaded || !isSignedIn) {
     return <></>;
@@ -100,6 +102,7 @@ export default function Flashcards() {
         </Typography>
       </Box>
       <Container maxWidth='100vw'>
+      <TextField id="outlined-basic" label="Search Sets" variant="outlined" fullWidth onChange={((e) => setFilter(e.target.value))}/>      
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {flashcards.map((flashcard, index) => (
             <Grid item xs={12} md={4} key={index}>
@@ -107,8 +110,8 @@ export default function Flashcards() {
                 <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
                   <CardContent>
                     <Stack direction={'row'} justifyContent={"space-between"}>
-                    <Typography variant='h6'>{flashcard.name}</Typography>
-                    <Typography variant='h6' textAlign={'right'}>{"→"}</Typography>
+                      <Typography variant='h6'>{flashcard.name}</Typography>
+                      <Typography variant='h6' textAlign={'right'}>{"→"}</Typography>
                     </Stack>
                   </CardContent>
                 </CardActionArea>
@@ -119,5 +122,4 @@ export default function Flashcards() {
       </Container>
     </>
   );
-
 }

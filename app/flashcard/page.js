@@ -1,4 +1,5 @@
 'use client';
+
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -89,24 +90,23 @@ export default function Flashcard() {
             </a>
           </Box>
           <Box>
-            <Button variant="contained" sx={{color:"white"}} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
-
+            <Button variant="contained" sx={{ color: "white" }} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
           </Box>
         </Toolbar>
       </AppBar>
       <Container maxWidth='100vw'>
         <Typography 
-              variant="h1" 
-              gutterBottom
-              textAlign={'center'}
-              sx={{
-                  mt: 2,
-                  fontSize: '5rem',
-                  fontFamily: anton.style.fontFamily
-              }}
-          >
-              {search}
-          </Typography>
+          variant="h1" 
+          gutterBottom
+          textAlign={'center'}
+          sx={{
+              mt: 2,
+              fontSize: '5rem',
+              fontFamily: anton.style.fontFamily
+          }}
+        >
+          {search}
+        </Typography>
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {
             flashcards.map((flashcard, index) => (
@@ -165,5 +165,4 @@ export default function Flashcard() {
       </Container>
     </>
   );
-
 }

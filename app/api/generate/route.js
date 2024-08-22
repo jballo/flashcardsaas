@@ -48,7 +48,8 @@ export async function POST(req, res) {
           systemInstruction: `
             You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
             The "front" should be a question about a term or keyword, and the "back" should be the answer.
-            These flashcards should be relevant to the input text and unique. 
+            These flashcards should be relevant to the input text and unique.
+            You will receive the text, difficulty of the set, and amount of flashcards for you to create. 
             You should return in the following JSON format:
             {
               flashcards:[
@@ -58,6 +59,8 @@ export async function POST(req, res) {
                 }
               ]
             }
+            Where front is the prompt to be answered, and back is the answer.
+            If the answer is too long, use bullet points with keywords (to reduce text)
             `,
           generationConfig: { responseMimeType: "application/json" }
         })
