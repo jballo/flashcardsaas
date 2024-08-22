@@ -58,7 +58,7 @@ const pricingPlans = [
       { feature: 'Full customization', available: true },
       { feature: 'Difficulty levels', available: true },
     ],
-    paymentBaseUrl: '',
+    paymentBaseUrl: 'https://buy.stripe.com/test_fZe16xbiY5KjgYo7st',
     description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
     icon: <GroupsIcon style={{ fontSize: 40 }} />,
   },
