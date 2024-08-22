@@ -12,24 +12,24 @@ const anton = Anton({
 const teamMembers = [
   {
     name: 'Jonathan Ballona Sanchez',
-    title: 'Agile Scrum Grandmaster and Full Stack Developer',
+    title: 'Full Stack Software Engineer and Project Manager',
     description: 'Graduate of UC Merced',
     website: 'https://jonathanballonasanchez.com/',
-    imgUrl: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg",
+    imgUrl: "https://media.licdn.com/dms/image/v2/D5603AQH075CKMqquGQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1707858516664?e=1729728000&v=beta&t=pCTfvE-Aj-CD0BKnH0hdSOO6CVGz0yLwgfWRenwA7hA",
   },
   {
     name: 'Karla Zamora',
     title: 'AI/ML and Backend Developer',
     description: 'University of Texas, Rio Grande Valley',
     website: 'https://karla-zamora.com/',
-    imgUrl: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg',
+    imgUrl: 'https://media.licdn.com/dms/image/v2/D5603AQFlLt2GhSDanw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1720386285605?e=1729728000&v=beta&t=vnd8n2GkMD2X3mHc7fUQ2vcmfJT4BH3jphfSN0rXOpc',
   },
   {
     name: 'Pranav Palle',
     title: 'UI/UX Designer and Frontend Developer',
     description: 'University of Maryland, College Park',
     website: 'https://pranavpalle.netlify.app',
-    imgUrl: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg',
+    imgUrl: 'https://media.licdn.com/dms/image/v2/D5603AQEeBxxRkZL8Uw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1695523201341?e=1729728000&v=beta&t=6dL2Hpz-LRMAyeOr9q82Q5t3p7cN8io4m8_ttSGBJlw',
   },
 ];
 
