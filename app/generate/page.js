@@ -66,7 +66,7 @@ export default function Generate() {
         alert('Flashcard collection with the same name already exists.');
         return;
       } else {
-        collections.push({ name });
+        collections.push({ name:name, difficulty:difficulty });
         batch.set(userDocRef, { flashcards: collections }, { merge: true });
       }
     } else {
