@@ -6,6 +6,7 @@ import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { db }  from "@/firebase";
+import Header from "../components/Header";
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -74,15 +75,28 @@ export default function Generate() {
   };
 
   return (
-    <Container maxWidth='md'>
-      <Box sx={{
-        mt: 4,
-        mb: 6,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <Typography variant='h4'>Generate Flashcards</Typography>
+    <Box 
+      width="100vw"
+      sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center'
+      }}
+    >
+      <Header />
+      <Box 
+        width='75vw'
+        sx={{
+          mt: 4,
+          mb: 6,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant='h4' sx={{mb: 4}}>Generate Flashcards</Typography>
         <Paper sx={{ p: 4, width: '100%' }}>
           <TextField
             value={text}
@@ -104,7 +118,7 @@ export default function Generate() {
       </Box>
 
       {flashcards.length > 0 && (
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: 4 }} width='75vw'>
           <Typography variant='h5'>Flashcards Preview</Typography>
           <Grid container spacing={3}>
             {
@@ -190,7 +204,6 @@ export default function Generate() {
           </Dialog>
         </Box>
       )}
-    </Container>
+    </Box>
   );
-
 }

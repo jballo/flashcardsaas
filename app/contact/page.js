@@ -12,21 +12,21 @@ const anton = Anton({
 const teamMembers = [
   {
     name: 'Jonathan Ballona Sanchez',
-    title: 'Full Stack Developer',
+    title: 'Agile Scrum Grandmaster and Full Stack Developer',
     description: 'Graduate of UC Merced',
-    website: 'https://www.google.com',
+    website: 'https://jonathanballonasanchez.com/',
     imgUrl: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg",
   },
   {
     name: 'Karla Zamora',
     title: 'AI/ML and Backend Developer',
     description: 'University of Texas, Rio Grande Valley',
-    website: 'https://www.google.com',
+    website: 'https://karla-zamora.com/',
     imgUrl: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg',
   },
   {
     name: 'Pranav Palle',
-    title: 'Designer and Frontend Developer',
+    title: 'UI/UX Designer and Frontend Developer',
     description: 'University of Maryland, College Park',
     website: 'https://pranavpalle.netlify.app',
     imgUrl: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2016/10/camera-photo-lens-stock-images.jpg',

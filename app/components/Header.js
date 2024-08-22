@@ -1,4 +1,4 @@
-import { AppBar, Button, Toolbar, Typography, Box } from '@mui/material';
+import { AppBar, Button, Toolbar, Typography, Box, Stack } from '@mui/material';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Anton } from "next/font/google";
 
@@ -10,8 +10,6 @@ const anton = Anton({
 
 
 export default function Header() {
-
-
     return (
         <AppBar 
             position="static"
@@ -41,18 +39,21 @@ export default function Header() {
                         </Typography>
                     </Button>
                 </Box>
-                <Box>
-                    <Button color="inherit" href="/pricing">Pricing</Button>
-                    <Button color='inherit' href="/contact">Contact</Button>
-                    <SignedOut>
-                        <Button color="inherit" href="/sign-in">Login</Button>
-                        <Button color="inherit" href="/sign-up">Sign Up</Button>
-                    </SignedOut>
-                    <SignedIn>
-                        <UserButton />
-                    </SignedIn>
-
-                </Box>
+                <Stack direction="row">
+                    <Box>
+                        <Button color="inherit" href="/pricing">Pricing</Button>
+                        <Button color='inherit' href="/contact">Contact</Button>
+                        <SignedOut>
+                            <Button color="inherit" href="/sign-in">Login</Button>
+                            <Button color="inherit" href="/sign-up">Sign Up</Button>
+                        </SignedOut>
+                    </Box>
+                    <Box sx={{ml: 2}}>
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
+                    </Box>
+                </Stack>
             </Toolbar>
         </AppBar>
     );
