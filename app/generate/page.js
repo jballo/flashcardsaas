@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from "@clerk/nextjs";
-import { Box, Container, Paper, TextField, Typography, Button, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogActions, DialogContentText, Drawer, Accordion, AccordionSummary, AccordionDetails, AppBar, Toolbar } from "@mui/material";
+import { Box, Container, Paper, TextField, Typography, Button, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogActions, DialogContentText, Drawer, Accordion, AccordionSummary, AccordionDetails, AppBar, Toolbar, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,20 +19,18 @@ export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState([]);
-  const [text, setText] = useState('');
   const [name, setName] = useState('');
   const [modal, setModal] = useState(false);
   const router = useRouter();
-  const [openDrawer, setOpenDrawer] = useState(false);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpenDrawer(newOpen);
-  };
+  // Prompt data
+  const [text, setText] = useState('');
+  const [difficulty, setDifficulty] = useState("normal")
+  const [amount, setAmount] = useState('10')
 
   const handleSubmit = async () => {
     fetch('api/generate', {
       method: 'POST',
-      body: text,
+      body: "Topic: " + text + ", Difficulty: " + difficulty + ", Amount: " + amount,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -118,12 +116,12 @@ export default function Generate() {
             </a>
           </Box>
           <Box>
-            <Button variant="contained" sx={{color:"white"}} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
+            <Button variant="contained" sx={{ color: "white" }} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
 
           </Box>
         </Toolbar>
       </AppBar>
-      
+
       <Container maxWidth='md'>
         <Box sx={{
           mt: 4,
@@ -146,10 +144,41 @@ export default function Generate() {
                 mb: 2,
               }}
             />
-            <Button variant='contained' color='primary' onClick={handleSubmit} fullWidth>
-              {' '}
-              Submit
-            </Button>
+            <Box  sx={{ display:'flex', justifyContent: 'space-evenly'}} gap={2}>
+              <FormControl sx={{ flex: 1 }}>
+                <InputLabel id="difficulty-label"> <Typography>Difficulty</Typography> </InputLabel>
+                <Select
+                  labelId="diff-select-label"
+                  displayEmpty
+                  value={difficulty}
+                  label="Difficulty"
+                  onChange={((e) => setDifficulty(e.target.value))}
+                >
+                  <MenuItem value={"Easy"}>Easy</MenuItem>
+                  <MenuItem value={"Normal"}>Normal</MenuItem>
+                  <MenuItem value={"Hard"}>Hard</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ flex: 1 }}>
+                <InputLabel id="difficulty-label"> <Typography>Amount</Typography> </InputLabel>
+                <Select
+                  labelId="amnt-select-label"
+                  displayEmpty
+                  value={amount}
+                  label="Amount"
+                  onChange={((e) => setAmount(e.target.value))}
+                >
+                  <MenuItem value={"5"}>5</MenuItem>
+                  <MenuItem value={"10"}>10</MenuItem>
+                  <MenuItem value={"15"}>15</MenuItem>
+                  <MenuItem value={"20"}>20</MenuItem>
+                </Select>
+              </FormControl>
+              <Button sx={{ flex: 1 }} variant='contained' color='primary' onClick={handleSubmit} >
+                {' '}
+                Submit
+              </Button>
+            </Box>
           </Paper>
         </Box>
 

@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, Grid, TextField, Toolbar, Typography } from "@mui/material";
 import { Anton } from "next/font/google";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import { all } from "axios";
 
 const anton = Anton({
   weight: '400',
@@ -22,6 +23,7 @@ const anton = Anton({
 export default function Flashcards() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
+  const [filter, setFilter] = useState("")
   const router = useRouter();
 
   useEffect(() => {
@@ -31,15 +33,16 @@ export default function Flashcards() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const collections = docSnap.data().flashcards || [];
-        console.log("collections: ", collections);
+        const allCollections = docSnap.data().flashcards || [];
+        const collections = allCollections.filter((list) => list.name.includes(filter))
+        //console.log("collections: ", collections);
         setFlashcards(collections);
       } else {
         await setDoc(docRef, { flashcards: [] });
       }
     }
     getFlashCards();
-  }, [user]);
+  }, [user, filter]);
 
   if (!isLoaded || !isSignedIn) {
     return <></>;
@@ -86,7 +89,7 @@ export default function Flashcards() {
         </Toolbar>
       </AppBar>
       <Container maxWidth='100vw'>
-
+      <TextField id="outlined-basic" label="Search Sets" variant="outlined" onChange={((e) => setFilter(e.target.value))}/>      
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {flashcards.map((flashcard, index) => (
             <Grid item xs={12} md={4} key={index}>

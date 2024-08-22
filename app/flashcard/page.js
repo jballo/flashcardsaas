@@ -5,7 +5,15 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 
 import { useSearchParams } from "next/navigation";
-import { Box, Container, Grid, Typography, Card, CardActionArea, CardContent, Button, Dialog, DialogTitle, DialogContentText, DialogActions, TextField } from "@mui/material";
+import { Box, Container, Grid, Typography, Card, CardActionArea, CardContent, Button, Dialog, DialogTitle, DialogContentText, DialogActions, TextField, AppBar, Toolbar } from "@mui/material";
+import { Anton } from "next/font/google";
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -51,6 +59,42 @@ export default function Flashcard() {
   }
 
   return (
+    <>
+    <AppBar
+        position="static"
+        left={0}
+        top={0}
+        sx={{
+          width: '100vw',
+          backgroundColor: '#62C4E1',
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <a href="/" style={{ textDecoration: "none", color: "white" }}>
+              <Typography
+                variant="h5"
+                style={{ flexGrow: 1 }}
+                sx={{
+                  fontFamily: anton.style.fontFamily,
+                  letterSpacing: 1,
+                }}
+              >
+                MindSpark
+              </Typography>
+            </a>
+          </Box>
+          <Box>
+            <Button variant="contained" sx={{ color: "white" }} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
+
+          </Box>
+        </Toolbar>
+      </AppBar>
     <Container maxWidth='100vw'>
       <Grid container spacing={3} sx={{ mt: 4 }}>
         {
@@ -109,6 +153,7 @@ export default function Flashcard() {
 
       </Grid>
     </Container>
+    </>
 
   );
 
