@@ -8,7 +8,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 const plans = [
     {
-        priceId: 'price_1Pq9iFKrKjT7Qm7LXNtEBHUl',
+        priceId: 'price_1PqdFpKrKjT7Qm7LmOez9rzY',
         name: 'Pro',
     },
     {
