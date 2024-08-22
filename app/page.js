@@ -134,16 +134,18 @@ export default function Home() {
               Enjoy the ability to effortlessly generate flashcards and get started on your learning journey, customize difficulty levels, and track your progress!
             </Typography>
           </Box>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            sx={{mt: 2, mr: 2}} 
-            onClick={signUp}
-          >
-            Get Started
-          </Button>
-          <Button variant="outlined" color="primary" sx={{mt: 2}} href='/pricing'>
-            Learn More
+          <SignedOut>
+            <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/sign-up">
+              Get Started
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
+              Get Started
+            </Button>
+          </SignedIn>
+          <Button variant="outlined" color="primary" sx={{mt: 2}} href="/pricing">
+            Pricing Plans
           </Button>
         </Box>
       </Box>

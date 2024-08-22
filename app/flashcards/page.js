@@ -1,19 +1,27 @@
 'use client';
 
-
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-
-
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container, DialogContent, Dialog, DialogActions, DialogContentText, DialogTitle, Grid, IconButton, Stack, TextField, Toolbar, Typography } from "@mui/material";
+import { Anton } from "next/font/google";
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import DeleteIcon from '@mui/icons-material/Delete';
 
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 export default function Flashcards() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [modal, setModal] = useState(false);
+  const [cardName, setCardName] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -23,15 +31,16 @@ export default function Flashcards() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const collections = docSnap.data().flashcards || [];
-        console.log("collections: ", collections);
+        const allCollections = docSnap.data().flashcards || [];
+        const collections = allCollections.filter((list) => list.name.toLowerCase().includes(filter.toLowerCase()))
+        //console.log("collections: ", collections);
         setFlashcards(collections);
       } else {
         await setDoc(docRef, { flashcards: [] });
       }
     }
     getFlashCards();
-  }, [user]);
+  }, [user, filter]);
 
   if (!isLoaded || !isSignedIn) {
     return <></>;
@@ -41,22 +50,121 @@ export default function Flashcards() {
     router.push(`/flashcard?id=${id}`);
   };
 
-  return (
-    <Container maxWidth='100vw'>
-      <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcards.map((flashcard, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Card>
-              <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
-                <CardContent>
-                  <Typography variant='h6'>{flashcard.name}</Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
-  );
+  const handleDeletion = () => {
+    // add deletion code
+  }
 
+  const handleOpen = (setname) => {
+    setModal(true);
+    setCardName(setname);
+  };
+
+  const handleClose = () => {
+    setModal(false);
+    setCardName("");
+  };
+
+  return (
+    <>
+      <AppBar
+        position="static"
+        left={0}
+        top={0}
+        sx={{
+          width: '100vw',
+          backgroundColor: '#62C4E1',
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <a href="/" style={{ textDecoration: "none", color: "white" }}>
+              <Typography
+                variant="h5"
+                style={{ flexGrow: 1 }}
+                sx={{
+                  fontFamily: anton.style.fontFamily,
+                  letterSpacing: 1,
+                }}
+              >
+                MindSpark
+              </Typography>
+            </a>
+          </Box>
+          <Box>
+            <Button variant="contained" sx={{ color: "white" }} startIcon={<LibraryAddIcon />} href="/generate">New Set</Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{textAlign: 'center', my: 4}}
+        >
+        <Typography 
+            variant="h1" 
+            gutterBottom
+            sx={{
+                fontSize: '5rem',
+                fontFamily: anton.style.fontFamily
+            }}
+        >
+            Flashcard Sets
+        </Typography>
+      </Box>
+      <Container maxWidth='100vw'>
+      <TextField id="outlined-basic" label="Search Sets" variant="outlined" fullWidth onChange={((e) => setFilter(e.target.value))}/>      
+        <Grid container spacing={3} sx={{ mt: 4 }}>
+          {flashcards.map((flashcard, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Card>
+                <Stack direction={'row'}>
+                  <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
+                    <CardContent>
+                      <Stack direction={'row'} gap={3}>
+                          <Typography variant='h6' textAlign={'right'}>{"→"}</Typography>
+                          <Typography variant='h6'>{flashcard.name}</Typography>          
+                      </Stack>
+                    </CardContent>
+                  </CardActionArea>
+                  <Box sx={{alignContent: "center", justifyItems: "center", paddingLeft: 2, paddingRight: 2}}>
+                    <IconButton aria-label="delete" onClick={() => handleOpen(flashcard.name)} sx={{background:'white', "&:hover": {bgcolor: "red"}}}>
+                      <DeleteIcon sx={{ color: 'black', "&:hover": {color: "white"} }}/>
+                    </IconButton>
+                  </Box>
+                </Stack>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+      <Dialog
+        open={modal}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Delete {cardName} Set
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this set?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{alignItems: 'center', justifyContent: 'center'}}>
+          <Button onClick={handleClose}>No - Cancel</Button>
+          <Button onClick={handleDeletion} autoFocus>
+            Yes - Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
 }

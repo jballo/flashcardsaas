@@ -5,54 +5,106 @@ import { Anton } from "next/font/google";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 
+import React from 'react';
+// import { Box, Button, Grid, Typography, Card, CardContent } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import PersonIcon from '@mui/icons-material/Person';
+import PeopleIcon from '@mui/icons-material/People';
+import GroupsIcon from '@mui/icons-material/Groups';
+// import Header from '../components/Header';
+// import { Anton } from "next/font/google";
+// import getStripe from '@/utils/get-stripe';
+
 const anton = Anton({
   weight: '400',
   style: 'normal',
   subsets: ['latin'],
 })
 
+const pricingPlans = [
+  {
+    title: 'Basic',
+    price: 'Free',
+    features: [
+      { feature: 'Access to basic features', available: true },
+      { feature: 'Limited flashcards', available: true },
+      { feature: 'Limited customization', available: true },
+      { feature: 'Difficulty customization', available: false },
+    ],
+    paymentBaseUrl: '',
+    description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
+    icon: <PersonIcon style={{ fontSize: 40 }} />,
+  },
+  {
+    title: 'Pro',
+    price: '$10.00',
+    features: [
+      { feature: 'Access to Pro features', available: true },
+      { feature: 'Several stored flashcard sets', available: true },
+      { feature: 'Access to various customizations', available: true },
+      { feature: 'Difficulty levels', available: true },
+    ],
+    paymentBaseUrl: 'https://buy.stripe.com/test_aEU8yZ3Qw1u34bC144',
+    description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
+    icon: <PeopleIcon style={{ fontSize: 40}} />,
+  },
+  {
+    title: 'Ultimate',
+    price: '$20.00',
+    features: [
+      { feature: 'Access to Ultimate features', available: true },
+      { feature: 'Unlimited stored flashcard sets', available: true },
+      { feature: 'Full customization', available: true },
+      { feature: 'Difficulty levels', available: true },
+    ],
+    paymentBaseUrl: '',
+    description: 'Semper urna veal tempus pharetra elit habisse platea dictumst.',
+    icon: <GroupsIcon style={{ fontSize: 40 }} />,
+  },
+];
 
-export default function Page(){
+export default function PricingPage() {
     const { isLoaded, isSignedIn, user } = useUser();
-
-
-    const subscribe = async () => {
+    
+    
+    const subscribe = async (paymentBaseUrl) => {
         if (!isSignedIn || !user) {
             alert('Please sign in to subscribe');
             return;
         };
         // function that opens a link to the stripe checkout page
-        const paymentlink = 'https://buy.stripe.com/test_aEU8yZ3Qw1u34bC144' + '?prefilled_email=' + user?.primaryEmailAddress;
+        const paymentlink = paymentBaseUrl + '?prefilled_email=' + user?.primaryEmailAddress;
         window.open(paymentlink, '_blank');
-
+    
     }
 
     const handleSubmit = async () => {
         const checkoutSession = await fetch('/api/checkout_session', {
-          method: 'POST',
-          headers: {
-            origin: 'http://localhost:3000',
-          },
+            method: 'POST',
+            headers: {
+                origin: 'http://localhost:3000',
+            },
         });
     
         const checkoutSessionJson = await checkoutSession.json();
-    
+        
         if (checkoutSession.statusCode == 500) {
-          console.error(checkoutSession.message);
-          return;
+            console.error(checkoutSession.message);
+            return;
         }
-    
+        
         const stripe = await getStripe();
         const { error } = await stripe.redirectToCheckout({
-          sessionId: checkoutSessionJson.id,
+            sessionId: checkoutSessionJson.id,
         });
-    
+        
         if (error) {
-          console.warn(error.message);
+            console.warn(error.message);
         }
-      }
+    }
 
-    return(
+    return (
         <Box
             width='100vw'
             sx={{
@@ -78,314 +130,67 @@ export default function Page(){
                     Pricing Plans
                 </Typography>
             </Box>
-            <Box
-                mx={4}
+
+            <Box 
+                width='75vw'
             >
-                <Grid container spacing={5} height='60vh' width='100vw'
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        textAlign: 'center',
-                    }}
-                >
-                    <Grid 
-                        item
+                <Grid container spacing={4} mt={4}>
+                {pricingPlans.map((plan, index) => (
+                    <Grid item xs={12} md={4} key={index}>
+                    <Card elevation={3} sx={{ padding: 4, borderRadius: 2, position: 'relative' }}>
+                        
+                        <Box textAlign="center">
+                        {plan.icon}
+                        <Typography variant="h5" mt={2}>
+                            {plan.title}
+                        </Typography>
+                        </Box>
 
-                        xs={12} // Full width on extra-small screens
-                        sm={6}  // Half width on small screens
-                        md={4} 
-                    >
-                        <Card
+                        <CardContent>
+                        <Typography variant="h5" color="textSecondary" gutterBottom align='left' marginBottom={3}>
+                            Features
+                        </Typography>
+                        {plan.features.map((feature, idx) => (
+                            <Typography
+                            variant="body2"
+                            key={idx}
                             sx={{
-                                backgroundColor: '#1E293B',
-                                width: '100%',
-                                height: '100%',
                                 display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: '15px',
-                                // color: '#000000'
+                                mb: 2,
+                                color: feature.available ? 'text.primary' : 'error.main',
                             }}
-                            
-                        >
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'start',
-                                    alignItems: 'start',
-                                    width: '85%',
-
-                                }}
+                            align='left'
                             >
-                                <CardHeader
-                                    title="Free"
-                                    fontSize="10rem"
-                                    titleTypographyProps={{
-                                        sx: {
-                                            fontSize: '2rem', // Adjust the font size as needed
-                                            color: '#ffffff',
-                                            textAlign: 'start'
+                            {feature.available ? (
+                                <CheckCircleIcon sx={{ mr: 1 }} />
+                            ) : (
+                                <CancelIcon sx={{ mr: 1 }} />
+                            )}
+                            <strong>{feature.feature}</strong>
+                            </Typography>
+                        ))}
 
-                                        }
-                                    }}
-                                />
-                            </Box>
-                            <CardContent
-                                sx={{
-                                    backgroundColor: '#ffffff',
-                                    width: '85%',
-                                    height: '60%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'start',
-                                    }}
-                                >
-                                    <Typography variant="h4" color="text.primary">
-                                        $0
-                                    </Typography>
-                                    <Typography variant="h6" color="text.primary">Per Month</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'start',
-                                    }}
-                                >
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Access to basic features
-                                    </Typography>
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Limited flashcards
-                                    </Typography>
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Limited customization
-                                    </Typography>
-                                </Box>
-                            </CardContent>
+                        {/* <Typography variant="body2" color="textSecondary" mt={4}>
+                            {plan.description}
+                        </Typography> */}
 
-                            <CardActions sx={{width: '89%'}}>
-                                <Button 
-                                    variant="contained" 
-                                    fullWidth size="small" 
-                                    sx={{backgroundColor: 'white'}}
-                                >
-                                    <Typography variant="body1p" color='black'>Get Started</Typography>
-                                </Button>
-                            </CardActions>
-
-                        </Card>
+                        <Box mt={4}>
+                            <Typography variant="body2" color="textSecondary">
+                            <span style={{ fontSize: '34px', color: 'black' }}>{plan.price}</span>
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                            Per Month
+                            </Typography>
+                        </Box>
+                        <Button variant="contained" color="primary" sx={{ mt: 3, borderRadius: '5px' }} onClick={() => {subscribe(plan.paymentBaseUrl)}}>
+                            Purchase Now
+                        </Button>
+                        </CardContent>
+                    </Card>
                     </Grid>
-                    <Grid 
-                        item
-
-                        xs={12} // Full width on extra-small screens
-                        sm={6}  // Half width on small screens
-                        md={4} 
-                    >
-                        <Card
-                            sx={{
-                                backgroundColor: '#1E293B',
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: '15px',
-                                // color: '#000000'
-                            }}
-                            
-                        >
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'start',
-                                    alignItems: 'start',
-                                    width: '85%',
-
-                                }}
-                            >
-                                <CardHeader
-                                    title="Basic"
-                                    fontSize="10rem"
-                                    titleTypographyProps={{
-                                        sx: {
-                                        fontSize: '2rem', // Adjust the font size as needed
-                                        color: '#ffffff',
-                                        textAlign: 'start'
-                                        }
-                                    }}
-                                />
-                            </Box>
-                            <CardContent
-                                sx={{
-                                    backgroundColor: '#ffffff',
-                                    width: '85%',
-                                    height: '60%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'start',
-                                    }}
-                                >
-                                    <Typography variant="h4" color="text.primary">
-                                        $5
-                                    </Typography>
-                                    <Typography variant="h6" color="text.primary">Per Month</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'start',
-                                    }}
-                                >
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Access to basic features
-                                    </Typography>
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Limited flashcards
-                                    </Typography>
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Limited customization
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-
-                            <CardActions sx={{width: '89%'}}>
-                                <Button 
-                                    variant="contained" 
-                                    fullWidth size="small" 
-                                    sx={{backgroundColor: 'white'}}
-                                    onClick={subscribe}
-                                >
-                                    <Typography variant="body1p" color='black'>Get Started</Typography>
-                                </Button>
-                           
-                            </CardActions>
-
-                        </Card>
-                    </Grid>
-                    <Grid 
-                        item
-
-                        xs={12} // Full width on extra-small screens
-                        sm={6}  // Half width on small screens
-                        md={4} 
-                    >
-                        <Card
-                            sx={{
-                                backgroundColor: '#1E293B',
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: '15px',
-                                // color: '#000000'
-                            }}
-                            
-                        >
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'start',
-                                    alignItems: 'start',
-                                    width: '85%',
-
-                                }}
-                            >
-                                <CardHeader
-                                    title="Pro"
-                                    fontSize="10rem"
-                                    titleTypographyProps={{
-                                        sx: {
-                                        fontSize: '2rem', // Adjust the font size as needed
-                                        color: '#ffffff',
-                                        textAlign: 'start'
-                                        }
-                                    }}
-                                />
-                            </Box>
-                            <CardContent
-                                sx={{
-                                    backgroundColor: '#ffffff',
-                                    width: '85%',
-                                    height: '60%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'start',
-                                    }}
-                                >
-                                    <Typography variant="h4" color="text.primary">
-                                        $10
-                                    </Typography>
-                                    <Typography variant="h6" color="text.primary">Per Month</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'start',
-                                    }}
-                                >
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Access to basic features
-                                    </Typography>
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Limited flashcards
-                                    </Typography>
-                                    <Typography variant="body1" color="text.secondary">
-                                        ✓ Limited customization
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-
-                            <CardActions sx={{width: '89%'}}>
-                                <Button 
-                                    variant="contained" 
-                                    fullWidth size="small" 
-                                    sx={{backgroundColor: 'white'}}
-                                    onClick={handleSubmit}
-                                >
-                                    <Typography variant="body1p" color='black'>Get Started</Typography>
-                                </Button>
-                            </CardActions>
-
-                        </Card>
-                    </Grid>
-
+                ))}
                 </Grid>
-                
             </Box>
-
         </Box>
     );
-
-}
+};
