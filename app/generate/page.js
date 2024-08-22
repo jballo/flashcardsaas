@@ -66,7 +66,7 @@ export default function Generate() {
         alert('Flashcard collection with the same name already exists.');
         return;
       } else {
-        collections.push({ name });
+        collections.push({ name:name, difficulty:difficulty });
         batch.set(userDocRef, { flashcards: collections }, { merge: true });
       }
     } else {
@@ -167,6 +167,7 @@ export default function Generate() {
                 <InputLabel id="difficulty-label"> <Typography>Difficulty</Typography> </InputLabel>
                 <Select
                   labelId="diff-select-label"
+                  required
                   displayEmpty
                   value={difficulty}
                   label="Difficulty"
@@ -182,6 +183,7 @@ export default function Generate() {
                 <InputLabel id="difficulty-label"> <Typography>Amount</Typography> </InputLabel>
                 <Select
                   labelId="amnt-select-label"
+                  required
                   displayEmpty
                   value={amount}
                   label="Amount"
