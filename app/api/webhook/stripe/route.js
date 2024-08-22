@@ -92,19 +92,23 @@ export async function POST(req) {
                 );
 
                 const usersRef = collection(db, 'users');
-                const userRef = usersRef.where('stripeCustomerId', '==', subscription.customer);
-                const userSnapshot = await getDoc(userRef);
+                const userQuery = query(usersRef, where('stripeCustomerId', '==', subscription.customer));
+                const userSnapshot = await getDocs(userQuery);
 
-                if (!userSnapshot.exists()) {
-                    console.error(`User with stripeCustomerId not found`);
+                if (userSnapshot.empty) {
+                    console.error(`User with email ${customer.email} not found`);
                     break;
                 }
 
-                const user = userSnapshot.data();
+                const userData = userSnapshot.docs[0].data();
+                const userRef = userSnapshot.docs[0].ref;
+
                 const newUserData = {
-                    ...user,
-                    plan: null,
-                    subscriptionId: null
+                    ...userData,
+                    isActive: false,
+                    stripeCustomerId: '',
+                    plan: '',
+                    subscriptionId: ''
                 }
 
                 await setDoc(userRef, newUserData);
