@@ -1,7 +1,9 @@
 'use client'
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, duration, Grid, Typography } from "@mui/material";
 import Header from "../components/Header";
 import { Anton } from "next/font/google";
+import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 const anton = Anton({
   weight: '400',
@@ -10,8 +12,20 @@ const anton = Anton({
 })
 
 
-
 export default function Page(){
+    const { isLoaded, isSignedIn, user } = useUser();
+
+
+    const subscribe = async () => {
+        if (!isSignedIn || !user) {
+            alert('Please sign in to subscribe');
+            return;
+        };
+        // function that opens a link to the stripe checkout page
+        const paymentlink = 'https://buy.stripe.com/test_aEU8yZ3Qw1u34bC144' + '?prefilled_email=' + user?.primaryEmailAddress;
+        window.open(paymentlink, '_blank');
+
+    }
 
     const handleSubmit = async () => {
         const checkoutSession = await fetch('/api/checkout_session', {
@@ -260,9 +274,11 @@ export default function Page(){
                                     variant="contained" 
                                     fullWidth size="small" 
                                     sx={{backgroundColor: 'white'}}
+                                    onClick={subscribe}
                                 >
                                     <Typography variant="body1p" color='black'>Get Started</Typography>
                                 </Button>
+                           
                             </CardActions>
 
                         </Card>
