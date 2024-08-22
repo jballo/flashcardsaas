@@ -1,12 +1,19 @@
 'use client';
 
 import { useUser } from "@clerk/nextjs";
-import { Box, Paper, TextField, Typography, Button, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogActions, DialogContentText, DialogContent } from "@mui/material";
+import { Box, DialogContent, Paper, TextField, Typography, Button, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogActions, DialogContentText, Drawer, Accordion, AccordionSummary, AccordionDetails, AppBar, Toolbar } from "@mui/material";
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { db }  from "@/firebase";
-import Header from "../components/Header";
+import { db } from "@/firebase";
+import { Anton } from "next/font/google";
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
+
+const anton = Anton({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -16,6 +23,11 @@ export default function Generate() {
   const [name, setName] = useState('');
   const [modal, setModal] = useState(false);
   const router = useRouter();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpenDrawer(newOpen);
+  };
 
   const handleSubmit = async () => {
     fetch('api/generate', {
@@ -75,7 +87,7 @@ export default function Generate() {
   };
 
   return (
-    <Box 
+    <Box
       width="100vw"
       sx={{
           display: 'flex',
@@ -85,40 +97,75 @@ export default function Generate() {
           textAlign: 'center'
       }}
     >
-      <Header />
-      <Box 
-        width='75vw'
+      <AppBar
+        position="static"
+        left={0}
+        top={0}
         sx={{
-          mt: 4,
-          mb: 6,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          width: '100vw',
+          backgroundColor: '#62C4E1',
         }}
       >
-        <Typography variant='h4' sx={{mb: 4}}>Generate Flashcards</Typography>
-        <Paper sx={{ p: 4, width: '100%' }}>
-          <TextField
-            value={text}
-            onChange={((e) => setText(e.target.value))}
-            label='Enter text'
-            fullWidth
-            multiline
-            rows={4}
-            variant='outlined'
-            sx={{
-              mb: 2,
-            }}
-          />
-          <Button variant='contained' color='primary' onClick={handleSubmit} fullWidth>
-            {' '}
-            Submit
-          </Button>
-        </Paper>
-      </Box>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <a href="/" style={{ textDecoration: "none", color: "white" }}>
+              <Typography
+                variant="h5"
+                style={{ flexGrow: 1 }}
+                sx={{
+                  fontFamily: anton.style.fontFamily,
+                  letterSpacing: 1,
+                }}
+              >
+                MindSpark
+              </Typography>
+            </a>
+          </Box>
+          <Box>
+            <Button variant="contained" sx={{color:"white"}} startIcon={<ViewStreamIcon />} href="/flashcards">My Flashcards</Button>
 
-      {flashcards.length > 0 && (
-        <>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      
+        <Box 
+          width='75vw'
+          sx={{
+            mt: 4,
+            mb: 6,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant='h4'>Generate Flashcards</Typography>
+          <Paper sx={{ p: 4, width: '100%' }}>
+            <TextField
+              value={text}
+              onChange={((e) => setText(e.target.value))}
+              label='Enter text'
+              fullWidth
+              multiline
+              rows={4}
+              variant='outlined'
+              sx={{
+                mb: 2,
+              }}
+            />
+            <Button variant='contained' color='primary' onClick={handleSubmit} fullWidth>
+              {' '}
+              Submit
+            </Button>
+          </Paper>
+        </Box>
+
+        {flashcards.length > 0 && (
+          <>
           <Box sx={{ mt: 4 }} width='75vw'>
             <Typography variant='h5'>Flashcards Preview</Typography>
             <Grid container spacing={3}>
