@@ -18,6 +18,9 @@ export default function RootLayout({ children }) {
       }}
     >
       <html lang="en">
+        <head>
+          <title>MindSpark</title>
+        </head>
         <body className={inter.className}>{children}</body>
       </html>
     </ClerkProvider>

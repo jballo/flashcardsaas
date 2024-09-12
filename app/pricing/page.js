@@ -4,17 +4,12 @@ import Header from "../components/Header";
 import { Anton } from "next/font/google";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-
 import React from 'react';
-// import { Box, Button, Grid, Typography, Card, CardContent } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import GroupsIcon from '@mui/icons-material/Groups';
-// import Header from '../components/Header';
-// import { Anton } from "next/font/google";
-// import getStripe from '@/utils/get-stripe';
 
 const anton = Anton({
   weight: '400',
@@ -117,7 +112,7 @@ export default function PricingPage() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                textAlign: 'center'
+                textAlign: 'center',
             }}
         >
             <Header />

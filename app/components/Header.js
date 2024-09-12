@@ -52,6 +52,7 @@ export default function Header() {
             sx={{
                 width: '100vw',
                 backgroundColor: '#62C4E1',
+                marginTop: 0
             }}
         >
             <Toolbar
